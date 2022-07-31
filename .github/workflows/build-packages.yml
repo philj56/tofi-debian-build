@@ -24,7 +24,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install llvm clang devscripts debhelper meson scdoc \
           ninja-build libfreetype-dev libharfbuzz-dev libcairo-dev \
-          libpango1.0-dev libwayland-dev wayland-protocols libxkbcommon-dev
+          libpango1.0-dev libwayland-dev wayland-protocols libxkbcommon-dev \
+          python3-pip
+
+          sudo pip3 install --upgrade meson
 
       - name: Set clang as default compiler
         run: sudo update-alternatives --set cc $(which clang)
@@ -33,7 +36,7 @@ jobs:
         run: ./gendeb.sh
 
       - name: Upload package
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           path: tofi-debian/tofi_0.3.1-1_amd64.deb
 
