@@ -36,7 +36,8 @@ jobs:
         run: ./gendeb.sh
 
       - name: Upload package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
+          name: tofi-debian
           path: tofi-debian/tofi_0.3.1-1_amd64.deb
 
