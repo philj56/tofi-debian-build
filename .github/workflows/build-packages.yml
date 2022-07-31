@@ -1,0 +1,39 @@
+name: Build packages
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+
+    branches:
+      - master
+
+jobs:
+  ubuntu:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          repository: philj56/tofi-debian-build
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install llvm clang devscripts debhelper meson scdoc \
+          ninja-build libfreetype-dev libharfbuzz-dev libcairo-dev \
+          libpango1.0-dev libwayland-dev wayland-protocols libxkbcommon-dev
+
+      - name: Set clang as default compiler
+        run: sudo update-alternatives --set cc $(which clang)
+
+      - name: Build package
+        run: ./gendeb.sh
+
+      - name: Upload package
+        uses: actions/upload-artifact@v1
+        with:
+          path: tofi-debian/tofi_0.3.1-1_amd64.deb
+

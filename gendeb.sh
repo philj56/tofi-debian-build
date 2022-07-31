@@ -7,8 +7,8 @@ pushd .
 mkdir debbuild
 cd debbuild
 
-# curl -L https://github.com/philj56/tofi/archive/v$version/tofi-$version.tar.gz -o tofi_$version.orig.tar.gz 
-curl -L https://github.com/philj56/tofi/archive/refs/tags/ubuntu-packaging-2.tar.gz -o tofi_$version.orig.tar.gz 
+# curl -L https://github.com/philj56/tofi/archive/v$version/tofi-$version.tar.gz -o tofi_$version.orig.tar.gz
+curl -L https://github.com/philj56/tofi/archive/refs/tags/ubuntu-packaging-2.tar.gz -o tofi_$version.orig.tar.gz
 tar xf tofi_$version.orig.tar.gz
 mv tofi-ubuntu-packaging-2 tofi-$version
 cd tofi-$version
