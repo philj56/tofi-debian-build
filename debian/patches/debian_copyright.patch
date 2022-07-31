@@ -1,0 +1,21 @@
+Description: Update copyright location
+ Debian expects packages to be located under
+ /usr/share/doc/<package>/copyright, so we move it here.
+
+--- tofi-TOFI_VERSION.orig/meson.build
++++ tofi-TOFI_VERSION/meson.build
+@@ -33,12 +33,13 @@ install_subdir(
+ 
+ license_dir = join_paths(
+   get_option('datadir'),
+-  'licenses',
++  'doc',
+   'tofi'
+ )
+ 
+ install_data(
+   'LICENSE',
++  rename: 'copyright',
+   install_dir: license_dir
+ )
+ 
