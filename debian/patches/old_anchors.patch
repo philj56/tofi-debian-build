@@ -1,0 +1,71 @@
+Description: Fix anchor behaviour.
+ The version of Sway shipped with Ubuntu 20.04 treats anchors differently to
+ modern versions, so fix that here.
+
+Index: tofi-TOFI_VERSION/src/config.c
+===================================================================
+--- tofi-TOFI_VERSION.orig/src/config.c
++++ tofi-TOFI_VERSION/src/config.c
+@@ -357,42 +357,31 @@ uint32_t parse_anchor(const char *filena
+ 			| ZWLR_LAYER_SURFACE_V1_ANCHOR_LEFT;
+ 	}
+ 	if (strcasecmp(str, "top") == 0) {
+-		return ZWLR_LAYER_SURFACE_V1_ANCHOR_TOP
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_LEFT
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_RIGHT;
++		return ZWLR_LAYER_SURFACE_V1_ANCHOR_TOP;
+ 	}
+ 	if (strcasecmp(str, "top-right") == 0) {
+ 		return ZWLR_LAYER_SURFACE_V1_ANCHOR_TOP
+ 			| ZWLR_LAYER_SURFACE_V1_ANCHOR_RIGHT;
+ 	}
+ 	if (strcasecmp(str, "right") == 0) {
+-		return ZWLR_LAYER_SURFACE_V1_ANCHOR_RIGHT
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_TOP
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_BOTTOM;
++		return ZWLR_LAYER_SURFACE_V1_ANCHOR_RIGHT;
+ 	}
+ 	if (strcasecmp(str, "bottom-right") == 0) {
+ 		return ZWLR_LAYER_SURFACE_V1_ANCHOR_BOTTOM
+ 			| ZWLR_LAYER_SURFACE_V1_ANCHOR_RIGHT;
+ 	}
+ 	if (strcasecmp(str, "bottom") == 0) {
+-		return ZWLR_LAYER_SURFACE_V1_ANCHOR_BOTTOM
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_LEFT
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_RIGHT;
++		return ZWLR_LAYER_SURFACE_V1_ANCHOR_BOTTOM;
+ 	}
+ 	if (strcasecmp(str, "bottom-left") == 0) {
+ 		return ZWLR_LAYER_SURFACE_V1_ANCHOR_BOTTOM
+ 			| ZWLR_LAYER_SURFACE_V1_ANCHOR_LEFT;
+ 	}
+ 	if (strcasecmp(str, "left") == 0) {
+-		return ZWLR_LAYER_SURFACE_V1_ANCHOR_LEFT
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_TOP
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_BOTTOM;
++		return ZWLR_LAYER_SURFACE_V1_ANCHOR_LEFT;
+ 	}
+ 	if (strcasecmp(str, "center") == 0) {
+-		return ZWLR_LAYER_SURFACE_V1_ANCHOR_TOP
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_BOTTOM
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_LEFT
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_RIGHT;
++		return 0;
+ 	}
+ 	PARSE_ERROR(filename, lineno, "Invalid anchor \"%s\".\n", str);
+ 	*err = true;
+Index: tofi-TOFI_VERSION/src/main.c
+===================================================================
+--- tofi-TOFI_VERSION.orig/src/main.c
++++ tofi-TOFI_VERSION/src/main.c
+@@ -889,10 +889,6 @@ int main(int argc, char *argv[])
+ 				.outline_color = {0.031f, 0.031f, 0.0f, 1.0f},
+ 			}
+ 		},
+-		.anchor =  ZWLR_LAYER_SURFACE_V1_ANCHOR_TOP
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_BOTTOM
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_LEFT
+-			| ZWLR_LAYER_SURFACE_V1_ANCHOR_RIGHT,
+ 		.use_history = true,
+ 	};
+ 	wl_list_init(&tofi.output_list);
