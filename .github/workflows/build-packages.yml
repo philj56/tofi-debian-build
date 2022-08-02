@@ -10,8 +10,11 @@ on:
 
 jobs:
   ubuntu:
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, ubuntu-22.04]
 
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout repo
@@ -29,7 +32,13 @@ jobs:
 
           sudo pip3 install --upgrade meson
 
-      - name: Set clang as default compiler
+      # The version of GCC on Ubuntu 20.04 is too old to recognise
+      # [[attribute]] syntax, so use clang instead.
+      #
+      # Conversely, there's a bug somewhere in debhelper with clang on
+      # Ubuntu 22.04, so use GCC there.
+      - name: Set clang as default compiler on Ubuntu 20.04
+        if: ${{ matrix.os == 'ubuntu-20.04' }}
         run: sudo update-alternatives --set cc $(which clang)
 
       - name: Build package
@@ -38,6 +47,6 @@ jobs:
       - name: Upload package
         uses: actions/upload-artifact@v3
         with:
-          name: tofi-debian
+          name: tofi-${{ matrix.os }}
           path: tofi-debian/tofi_0.3.1-1_amd64.deb
 
